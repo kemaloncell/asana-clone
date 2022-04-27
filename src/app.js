@@ -1,6 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const config = require('./config');
+const { ProjectRoutes } = require('./api-routes');
 
 config();
 
@@ -13,4 +14,5 @@ const PORT = process.env.APP_PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    app.use('/projects', ProjectRoutes.router);
 });
