@@ -7,6 +7,10 @@ const ProjectSchema = new Mongoose.Schema({
         type:Mongoose.Types.ObjectId,
         ref:'User'
     },*/
-})
+},{
+    timestamps:true,
+    versionKey:false
+}
+);
 
 module.exports = Mongoose.model('project',ProjectSchema);

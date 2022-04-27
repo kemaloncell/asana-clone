@@ -1,8 +1,8 @@
-const { insert } = require('../services/Projects');
+const { insert, list } = require('../services/Projects');
 const httpStatus = require('http-status');
 const create = (req, res) => {
 
-  insert({name:"test projesi2"})
+  insert(req.body)
       .then(result => {
       res.status(httpStatus.CREATED).send(result)
   }).catch(err => {
@@ -12,7 +12,12 @@ const create = (req, res) => {
  };
 
 const index = (req, res) => {
-  res.status(200).send("project index")
+    list()
+      .then(result => {
+      res.status(httpStatus.OK).send(result)
+  }).catch(err => {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+  });
  };
 
 module.exports = {
