@@ -1,3 +1,4 @@
+//model ile ara bir katman
 const Project = require('../models/Projects');
 
 const insert = (projectData) => {

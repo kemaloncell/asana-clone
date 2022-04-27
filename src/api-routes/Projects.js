@@ -4,8 +4,8 @@ const express = require('express');
 const { create, index } = require('../controllers/Projects');
 const router = express.Router();
 
-router.post('/', index);
-router.get('/', create);
+router.get('/', index);
+router.post('/', create);
 
 
 module.exports = {
