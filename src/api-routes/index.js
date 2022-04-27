@@ -1,1 +1,1 @@
-module.exports.Projects = require('./Projects');
+module.exports.ProjectRoutes = require('./Projects');
