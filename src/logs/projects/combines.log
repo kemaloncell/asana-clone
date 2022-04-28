@@ -1,0 +1,2 @@
+{"level":"info","message":"kemal isimli proje oluşturuldu.","service":"user-service"}
+{"level":"info","message":{"_id":"626aa44b2cd82522028b57e1","createdAt":"2022-04-28T14:27:23.389Z","name":"test logger","updatedAt":"2022-04-28T14:27:23.389Z"},"service":"user-service"}
