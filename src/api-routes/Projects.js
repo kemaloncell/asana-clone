@@ -1,13 +1,13 @@
-
-// validate middleware
 const validate = require('../middlewares/validate');
-// validations
+const authenticate = require('../middlewares/authenticate');
+
 const  schemas  = require('../validations/Projects');
 const express = require('express');
 const { create, index } = require('../controllers/Projects');
 const router = express.Router();
 
-router.get('/', index);
+// authenticate'yi geçerse indexe gider yani token kontrolü
+router.route('/').get(authenticate, index);
 router.route('/').post(validate(schemas.createValidation), create);
 
 
