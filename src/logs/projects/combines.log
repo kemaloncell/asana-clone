@@ -1,2 +1,10 @@
 {"level":"info","message":"kemal isimli proje oluşturuldu.","service":"user-service"}
 {"level":"info","message":{"_id":"626aa44b2cd82522028b57e1","createdAt":"2022-04-28T14:27:23.389Z","name":"test logger","updatedAt":"2022-04-28T14:27:23.389Z"},"service":"user-service"}
+{"level":"info","message":{"_id":"627257848a9bd9ff2f244e9a","createdAt":"2022-05-04T10:37:56.399Z","name":"test logger","updatedAt":"2022-05-04T10:37:56.399Z"},"service":"project-service"}
+{"level":"info","message":{"_id":"6272578a8a9bd9ff2f244e9c","createdAt":"2022-05-04T10:38:02.268Z","name":"test logger","updatedAt":"2022-05-04T10:38:02.268Z"},"service":"project-service"}
+{"level":"info","message":{"_id":"6272580c9933ce16c7960dfa","createdAt":"2022-05-04T10:40:12.072Z","name":"test logger","updatedAt":"2022-05-04T10:40:12.072Z"},"service":"project-service"}
+{"level":"info","message":{"_id":"6272586a9933ce16c7960dfe","createdAt":"2022-05-04T10:41:46.116Z","name":"Kemal Test projesi","updatedAt":"2022-05-04T10:41:46.116Z"},"service":"project-service"}
+{"level":"info","message":{"_id":"6272586e9933ce16c7960e00","createdAt":"2022-05-04T10:41:50.129Z","name":"Kemal Test projesi 2","updatedAt":"2022-05-04T10:41:50.129Z"},"service":"project-service"}
+{"level":"info","message":{"_id":"627258719933ce16c7960e02","createdAt":"2022-05-04T10:41:53.039Z","name":"Kemal Test projesi 3","updatedAt":"2022-05-04T10:41:53.039Z"},"service":"project-service"}
+{"level":"info","message":{"_id":"627258749933ce16c7960e04","createdAt":"2022-05-04T10:41:56.316Z","name":"Kemal Test projesi 4","updatedAt":"2022-05-04T10:41:56.316Z"},"service":"project-service"}
+{"level":"info","message":{"_id":"62725ae79a55f2c41f1eeb16","createdAt":"2022-05-04T10:52:23.266Z","name":"Kemal Test projesi 5","updatedAt":"2022-05-04T10:52:23.266Z","user_id":"626b9ba56bac5ba3d6b38596"},"service":"project-service"}
