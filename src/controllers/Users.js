@@ -59,10 +59,8 @@ const projectList = (req, res) => {
 
 const resetPassword = (req, res) => {
     const new_password = uuid.v4()?.split("-")[0] || `usr-${new Date().getTime()}`;
-    console.log(new_password,'salt ');
     modify({email: req.body.email}, { password: passwordToHash(new_password) }).then(updatedUser => {
-        console.log(updatedUser, "updatedUser");
-        console.log(updatedUser.password, "updatedUser.password");
+
     if(!updatedUser) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kullanıcı bulunamadı'});
 
         eventEmitter.emit('send_mail', {
@@ -80,10 +78,21 @@ const resetPassword = (req, res) => {
     });
 }
 
+const update = (req, res) => {
+    modify({_id: req.user._id}, req.body).then(updatedUser => {
+        res.status(httpStatus.OK).send(updatedUser);
+    }).catch(() => {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+            error: "Kullanıcı güncellenirken bir hata oluştu"
+        });
+    })
+}
+
 module.exports = {
     create,
     index,
     login,
     projectList,
-    resetPassword
+    resetPassword,
+    update
  };
