@@ -1,7 +1,10 @@
-const { insert, list, loginUser } = require('../services/Users');
+const { insert, list, loginUser, modify } = require('../services/Users');
 const projectService = require('../services/Projects');
 const httpStatus = require('http-status');
 const { passwordToHash, generateAccessToken, generateRefreshToken } = require('../scripts/utils/helper');
+const uuid = require('uuid');
+const eventEmitter = require('../scripts/events/eventEmitter');
+
 
 const create = (req, res) => {
   req.body.password = passwordToHash(req.body.password);
@@ -15,6 +18,7 @@ const create = (req, res) => {
  };
 
 const login = (req,res) => {
+    req.body.password = passwordToHash(req.body.password);
     loginUser(req.body)
         .then(user => {
             if(!user) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kullanıcı bulunamadı'});
@@ -53,9 +57,33 @@ const projectList = (req, res) => {
         });
 }
 
+const resetPassword = (req, res) => {
+    const new_password = uuid.v4()?.split("-")[0] || `usr-${new Date().getTime()}`;
+    console.log(new_password,'salt ');
+    modify({email: req.body.email}, { password: passwordToHash(new_password) }).then(updatedUser => {
+        console.log(updatedUser, "updatedUser");
+        console.log(updatedUser.password, "updatedUser.password");
+    if(!updatedUser) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kullanıcı bulunamadı'});
+
+        eventEmitter.emit('send_mail', {
+            to: updatedUser.email,
+            subject: "Şifre Sıfırlama ✔",
+            html: "Talebiniz üzerine şifre sıfırlama işlemi gerçekleşti <br /> Giriş yaptıktan sonra şifrenizi değiştirinz <br/>" +
+                `Yeni Şifreniz => <b>${new_password}</b>`,
+        });
+
+        res.status(httpStatus.OK).send({message: 'Şifre sıfırlama maili gönderildi'});
+    }).catch(() => {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+            error: "Şifre değiştirilirken bir hata oluştu"
+        });
+    });
+}
+
 module.exports = {
     create,
     index,
     login,
-    projectList
+    projectList,
+    resetPassword
  };
