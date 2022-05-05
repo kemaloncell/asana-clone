@@ -1,9 +1,10 @@
-const { insert, list, loginUser, modify } = require('../services/Users');
+const { insert, list, loginUser, modify, remove } = require('../services/Users');
 const projectService = require('../services/Projects');
 const httpStatus = require('http-status');
 const { passwordToHash, generateAccessToken, generateRefreshToken } = require('../scripts/utils/helper');
 const uuid = require('uuid');
 const eventEmitter = require('../scripts/events/eventEmitter');
+
 
 
 const create = (req, res) => {
@@ -88,11 +89,42 @@ const update = (req, res) => {
     })
 }
 
+const changePassword = (req, res) => {
+    // Uİ geldikten sonra şifre karşılaştırmaya ilişkin kurallar burada yer alacak
+    req.body.password = passwordToHash(req.body.password);
+    modify({_id: req.user._id}, req.body).then(updatedUser => {
+        res.status(httpStatus.OK).send(updatedUser);
+    }).catch(() => {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+            error: "Kullanıcı güncellenirken bir hata oluştu"
+        });
+    })
+}
+
+const deleteUser = (req, res) => {
+    if(req.params?._id){
+        return  res.status(httpStatus.BAD_REQUEST).send({message: 'ID bilgisi gerekli'});
+    }
+    remove(req.params?.id).then(deletedItem => {
+        if (!deletedItem){
+            return  res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
+        }
+        res.status(httpStatus.OK).send({
+            message: 'Kayıt başarıyla silindi',
+        });
+    }).catch(err => {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Silme işlemi sırasında bir problem oluştu"});
+    });
+
+}
+
 module.exports = {
     create,
     index,
     login,
     projectList,
     resetPassword,
-    update
+    changePassword,
+    update,
+    deleteUser,
  };
