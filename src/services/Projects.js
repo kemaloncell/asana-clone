@@ -12,7 +12,7 @@ const list = (where) => {
       // path => user_id isimli field'nı doldurmak istiyorum
       path:'user_id',
       // seçtiğim sütunlar gelsin
-      select:'full_name, email'
+      select:'full_name, email, profile_image',
   });
 };
 

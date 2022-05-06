@@ -4,7 +4,7 @@ const httpStatus = require('http-status');
 const { passwordToHash, generateAccessToken, generateRefreshToken } = require('../scripts/utils/helper');
 const uuid = require('uuid');
 const eventEmitter = require('../scripts/events/eventEmitter');
-
+const path = require('path');
 
 
 const create = (req, res) => {
@@ -118,6 +118,30 @@ const deleteUser = (req, res) => {
 
 }
 
+const updateProfileImage = (req, res) => {
+    // 1 Resim kontrolü
+   if(!req?.files?.profile_image){
+       res.status(httpStatus.BAD_REQUEST).send({error: 'Bu işlem için yeterli veri yok!'});
+   }
+    // 2 upload işlemi
+    const extension = path.extname(req.files.profile_image.name);
+    const fileName = `${req?.user._id}${extension}`;
+   const folderPath = path.join(__dirname, "../", "uploads/users", fileName);
+   req.files.profile_image.mv(folderPath, function (err) {
+       if (err) return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: err });
+       // 3 db save işlemi
+       modify({_id: req.user._id}, {profile_image: fileName}).then(updatedUser => {
+           res.status(httpStatus.OK).send(updatedUser);
+       }).catch(() => {
+           res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+               error: "Yükleme başaraılı fakat güncellenirken bir hata oluştu"
+           });
+       });
+   // 4 responses
+
+   });
+}
+
 module.exports = {
     create,
     index,
@@ -127,4 +151,5 @@ module.exports = {
     changePassword,
     update,
     deleteUser,
+    updateProfileImage,
  };
