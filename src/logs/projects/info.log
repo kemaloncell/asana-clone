@@ -9,3 +9,5 @@
 {"level":"info","message":{"_id":"627258749933ce16c7960e04","createdAt":"2022-05-04T10:41:56.316Z","name":"Kemal Test projesi 4","updatedAt":"2022-05-04T10:41:56.316Z"},"service":"project-service"}
 {"level":"info","message":{"_id":"62725ae79a55f2c41f1eeb16","createdAt":"2022-05-04T10:52:23.266Z","name":"Kemal Test projesi 5","updatedAt":"2022-05-04T10:52:23.266Z","user_id":"626b9ba56bac5ba3d6b38596"},"service":"project-service"}
 {"level":"info","message":{"_id":"6274fff217aee21f14d13bd1","createdAt":"2022-05-06T11:01:06.152Z","name":"Kemal Test projesi ","updatedAt":"2022-05-06T11:01:06.152Z","user_id":"6273a9716e402dea72d81cbd"},"service":"project-service"}
+{"level":"info","message":{"_id":"6275076ce63a654daf6ceb49","createdAt":"2022-05-06T11:33:00.787Z","name":"Kemal Test projesi 2","updatedAt":"2022-05-06T11:33:00.787Z","user_id":"6273a9716e402dea72d81cbd"},"service":"project-service"}
+{"level":"info","message":{"_id":"62750aaf2ae5869369dee653","createdAt":"2022-05-06T11:46:55.567Z","name":"alinin projesi","updatedAt":"2022-05-06T11:46:55.567Z","user_id":"6273a9716e402dea72d81cbd"},"service":"project-service"}
