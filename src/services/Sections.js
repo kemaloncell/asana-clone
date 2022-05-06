@@ -13,7 +13,10 @@ const list = (where) => {
       path:'user_id',
       // seçtiğim sütunlar gelsin
       select:'full_name, email, profile_image',
-  });
+  }).populate({
+      path:'project_id',
+      select:'name',
+  })
 };
 
 const modify = (data, id) => {
