@@ -28,4 +28,4 @@ SectionSchema.post('save',(doc)=>{
     })
 });
 
-module.exports = Mongoose.model('project',SectionSchema);
+module.exports = Mongoose.model('sections',SectionSchema);

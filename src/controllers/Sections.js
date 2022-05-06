@@ -1,11 +1,8 @@
-const { insert, modify ,list, remove } = require('../services/Projects');
+const { insert, modify ,list, remove } = require('../services/Sections');
 const httpStatus = require('http-status');
 
 
 const index = (req, res) => {
-    return res.status(httpStatus.OK).json({
-        message: 'Welcome to the section'
-    });
   /* list()
         .then(result => {
             res.status(httpStatus.OK).send(result)
