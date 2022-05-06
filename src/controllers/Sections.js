@@ -38,8 +38,8 @@ const deleteSection = (req, res) => {
     if(req.params?._id){
         return  res.status(httpStatus.BAD_REQUEST).send({message: 'ID bilgisi gerekli'});
     }
-    remove(req.params?.id).then(deletedItem => {
-        if (!deletedItem){
+    remove(req.params?.id).then(deletedDoc => {
+        if (!deletedDoc){
             return  res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
         }
         res.status(httpStatus.OK).send({
