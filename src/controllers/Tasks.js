@@ -83,11 +83,46 @@ const deleteComment = (req,res) => {
     });
 }
 
+const addSubTask = (req, res) => {
+     // 1 MAİN TASK ÇEKİLİR
+     if(!req.params?.id) return res.status(httpStatus.BAD_REQUEST).send({message: 'ID bilgisi gerekli'});
+     findOne({_id: req.params.id}).then(mainTask => {
+        if (!mainTask) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
+         // 2 SUB TASK EKLENİR
+         insert({...req.body, user_id:req.user})
+             .then(subTask => {
+                 // 3 SUB TASKIN REFERANSI MAİN TASK ÜZERİNDEn GÖSTERİLİR UPDATE EDİLİR
+                 mainTask.sub_tasks.push(subTask);
+                 mainTask.save().then(updatedDoc => {
+                     // 4 KULLANICIYA YENİ DÖKÜMAN GÖNDERİLİR
+                     return res.status(httpStatus.OK).send(updatedDoc);
+                 }).catch(err => {
+                     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Kayıt sırasında bir problem oluştu"});
+                 });
+             }).catch(err => {
+             res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+         });
+     }).catch(err => {
+         res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Kayıt sırasında bir problem oluştu"});
+     });
+ }
+
+ const fetchTask = (req, res) => {
+     findOne({_id: req.params.id}, true).then(task => {
+         if (!task) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
+         return res.status(httpStatus.OK).send(task);
+     }).catch(err => {
+         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+     });
+ }
+
 module.exports = {
     create,
     index,
     update,
     deleteTask,
     makeComment,
-    deleteComment
+    deleteComment,
+    addSubTask,
+    fetchTask
  };

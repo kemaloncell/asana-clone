@@ -1,8 +1,12 @@
 //model ile ara bir katman
 const Task = require('../models/Tasks');
 
-const findOne = (where) => {
-  return Task.findOne(where);
+const findOne = (where, expand) => {
+ if(!expand) return Task.findOne(where);
+ return Task.findOne(where).populate({
+   path: 'user_id',
+   select: 'full_name, email, profile_image'
+ });
 }
 
 const insert = (sectionData) => {
