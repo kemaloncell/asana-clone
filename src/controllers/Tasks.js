@@ -1,4 +1,4 @@
-const { insert, modify ,list, remove } = require('../services/Tasks');
+const { insert, modify ,list, remove, findOne } = require('../services/Tasks');
 const httpStatus = require('http-status');
 
 
@@ -51,9 +51,29 @@ const deleteTask = (req, res) => {
 
 }
 
+const makeComment = (req, res) => {
+    findOne({_id: req.params.id}).then(mainTask => {
+      if (!mainTask) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
+    const comment = {
+        comment : req.body.comment,
+        commented_at : new Date(),
+        user_id : req.user
+    }
+    mainTask.comments.push(comment);
+    mainTask.save().then(updatedDoc => {
+       return res.status(httpStatus.OK).send(updatedDoc);
+    }).catch(err => {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Kayıt sırasında bir problem oluştu"});
+    });
+    }).catch(err => {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Kayıt sırasında bir problem oluştu"});
+    });
+}
+
 module.exports = {
     create,
     index,
     update,
-    deleteTask
+    deleteTask,
+    makeComment
  };

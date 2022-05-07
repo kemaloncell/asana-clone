@@ -1,6 +1,10 @@
 //model ile ara bir katman
 const Task = require('../models/Tasks');
 
+const findOne = (where) => {
+  return Task.findOne(where);
+}
+
 const insert = (sectionData) => {
     // Project için projectten yeni üretti
   const task = new Task(sectionData);
@@ -31,5 +35,6 @@ module.exports = {
     insert,
     modify,
     list,
-    remove
+    remove,
+    findOne
 }
