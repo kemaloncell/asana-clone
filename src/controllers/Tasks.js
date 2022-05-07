@@ -1,7 +1,6 @@
 const { insert, modify ,list, remove, findOne } = require('../services/Tasks');
 const httpStatus = require('http-status');
 
-
 const index = (req, res) => {
     if(!req?.params?.projectId) return res.status(httpStatus.BAD_REQUEST).send({ error: 'Proje bilgisi gereklidir' });
    list({project_id : req.params.projectId})
@@ -55,7 +54,7 @@ const makeComment = (req, res) => {
     findOne({_id: req.params.id}).then(mainTask => {
       if (!mainTask) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
     const comment = {
-        comment : req.body.comment,
+        ...req.body,
         commented_at : new Date(),
         user_id : req.user
     }
@@ -70,10 +69,25 @@ const makeComment = (req, res) => {
     });
 }
 
+const deleteComment = (req,res) => {
+    findOne({_id: req.params.id}).then(mainTask => {
+        if (!mainTask) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
+        mainTask.comments = mainTask.comments.filter(comment => comment._id?.toString() !== req.params.commentId);
+        mainTask.save().then(updatedDoc => {
+            return res.status(httpStatus.OK).send(updatedDoc);
+        }).catch(err => {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Kayıt sırasında bir problem oluştu"});
+        });
+    }).catch(err => {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Kayıt sırasında bir problem oluştu"});
+    });
+}
+
 module.exports = {
     create,
     index,
     update,
     deleteTask,
-    makeComment
+    makeComment,
+    deleteComment
  };
