@@ -2,11 +2,23 @@
 const Task = require('../models/Tasks');
 
 const findOne = (where, expand) => {
+    // Daha fazla gelen koşulu öne çekmek gerekir
  if(!expand) return Task.findOne(where);
  return Task.findOne(where).populate({
    path: 'user_id',
-   select: 'full_name, email, profile_image'
- });
+   select: 'full_name email profile_image'
+ }).populate({
+         path: 'comments',
+     populate:{
+            path: 'user_id',
+          select: 'full_name email profile_image',
+     }
+ }).populate({
+     // sub_tasks arrayini çoğaltıcan diyoruz
+         path:'sub_tasks',
+         select: 'title description isCompleted assigned_to due_date order sub_tasks statuses',
+
+     })
 }
 
 const insert = (sectionData) => {

@@ -6,6 +6,7 @@ const loaders = require('./loaders');
 const events = require('./scripts/events');
 const { ProjectRoutes, UserRoutes, SectionRoutes, TaskRoutes }  = require('./api-routes');
 const path = require('path');
+const BaseService = require('./services/BaseService');
 
 config();
 loaders();
@@ -28,4 +29,8 @@ app.listen(PORT, () => {
     app.use("/users", UserRoutes);
     app.use("/sections", SectionRoutes);
     app.use("/tasks", TaskRoutes);
+
+    // Kopyasını yarrattık bu sayede BaseService'ın instance'ını kullanabiliyoruz
+    const baseService = new BaseService("model");
+    baseService.getService();
 });

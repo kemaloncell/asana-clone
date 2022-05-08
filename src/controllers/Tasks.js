@@ -1,5 +1,6 @@
 const { insert, modify ,list, remove, findOne } = require('../services/Tasks');
 const httpStatus = require('http-status');
+const {log} = require("winston");
 
 const index = (req, res) => {
     if(!req?.params?.projectId) return res.status(httpStatus.BAD_REQUEST).send({ error: 'Proje bilgisi gereklidir' });
@@ -69,7 +70,7 @@ const makeComment = (req, res) => {
     });
 }
 
-const deleteComment = (req,res) => {
+const deleteComment = (req, res) => {
     findOne({_id: req.params.id}).then(mainTask => {
         if (!mainTask) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
         mainTask.comments = mainTask.comments.filter(comment => comment._id?.toString() !== req.params.commentId);
@@ -85,11 +86,12 @@ const deleteComment = (req,res) => {
 
 const addSubTask = (req, res) => {
      // 1 MAİN TASK ÇEKİLİR
-     if(!req.params?.id) return res.status(httpStatus.BAD_REQUEST).send({message: 'ID bilgisi gerekli'});
+     if(!req.params.id) return res.status(httpStatus.BAD_REQUEST).send({message: 'ID bilgisi gerekli'});
      findOne({_id: req.params.id}).then(mainTask => {
         if (!mainTask) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
          // 2 SUB TASK EKLENİR
-         insert({...req.body, user_id:req.user})
+         req.body.user_id = req.user;
+         insert(req.body)
              .then(subTask => {
                  // 3 SUB TASKIN REFERANSI MAİN TASK ÜZERİNDEn GÖSTERİLİR UPDATE EDİLİR
                  mainTask.sub_tasks.push(subTask);
@@ -112,7 +114,7 @@ const addSubTask = (req, res) => {
          if (!task) return res.status(httpStatus.NOT_FOUND).send({message: 'Böyle bir kayıt bulunmamaktadır'});
          return res.status(httpStatus.OK).send(task);
      }).catch(err => {
-         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+         res.status(httpStatus.INTERNAL_SERVER_ERROR).send({error: "Kayıt sırasında bir problem oluştu"});
      });
  }
 
